@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.WebSettings;
@@ -13,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import fr.vinetos.hellomusic.R;
+import fr.vinetos.hellomusic.manager.PermissionManager;
 
 /*
  * ==============================================================================
@@ -57,6 +59,7 @@ public class WebActivity extends Activity {
 
     public static final String HOME = "http://m.vinetos.fr";
     public static final String YOUTUBE_API_HOME = HOME + "/youtube/?url=";
+    private PermissionManager permissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,9 @@ public class WebActivity extends Activity {
         final Intent intent = getIntent();
         final String action = intent.getAction();
         final String type = intent.getType();
+
+        permissionManager = new PermissionManager(this);
+        permissionManager.checkAndRequestPermissions();
 
         // Is open from sharing menu
         if (Intent.ACTION_SEND.equals(action) && type != null) {
@@ -102,7 +108,7 @@ public class WebActivity extends Activity {
                 return true;
             }
         });
-        // Support downloads with the Downloadanager
+        // Support downloads with the DownloadManager
         webView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent,
@@ -121,6 +127,11 @@ public class WebActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**

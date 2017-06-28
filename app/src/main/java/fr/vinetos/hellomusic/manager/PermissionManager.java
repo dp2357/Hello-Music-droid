@@ -137,7 +137,8 @@ public class PermissionManager {
                                                     checkAndRequestPermissions();
                                                     break;
                                                 case DialogInterface.BUTTON_NEGATIVE:
-                                                    // proceed with logic by disabling the related features or quit the app.
+                                                    // proceed with logic by leaving the app.
+                                                    activity.finish();
                                                     break;
                                             }
                                         }

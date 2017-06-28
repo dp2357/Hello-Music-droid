@@ -88,7 +88,7 @@ public class PermissionManager {
             return false;
 
         }
-        return false;
+        return true;
     }
 
     public boolean onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
